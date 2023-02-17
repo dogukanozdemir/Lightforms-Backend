@@ -1,4 +1,4 @@
-package com.forms.lightweight.lightweight.entity;
+package com.forms.lightweight.lightweight.dto;
 
 import lombok.*;
 
@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class SignupUserRequestDTO {
 
     private String name;
     private String email;
