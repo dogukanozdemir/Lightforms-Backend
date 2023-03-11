@@ -1,4 +1,4 @@
-package com.forms.lightweight.lightweight.base.exception;
+package com.forms.lightweight.lightweight.base.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -6,11 +6,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsUtils;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurity {
+public class WebSecurity  {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -19,10 +18,11 @@ public class WebSecurity {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().authorizeRequests()
-                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
+        http
+                .authorizeHttpRequests( requests -> requests
+                        .requestMatchers( "/api/signup","/api/login").permitAll()
+                );
 
-
-        return http.build();
+        return http.csrf().disable().build();
     }
 }
