@@ -14,7 +14,7 @@ buildNumber.properties
 logs/
 
 # Intellij
-.idea/
+.idea
 *.iml
 *.iws
 
