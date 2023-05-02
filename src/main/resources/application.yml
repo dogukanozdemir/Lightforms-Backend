@@ -2,3 +2,16 @@ spring:
   config:
     activate:
       on-profile: test
+  datasource:
+    url: jdbc:mysql://db-lightweight.cffpxl1xjjay.eu-west-1.rds.amazonaws.com:3306/lightweight
+    username: admin
+    password: Capstone&123
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 10
+        format_sql: true
