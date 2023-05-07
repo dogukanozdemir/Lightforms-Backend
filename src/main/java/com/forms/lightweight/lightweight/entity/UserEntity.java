@@ -1,5 +1,6 @@
 package com.forms.lightweight.lightweight.entity;
 
+import com.forms.lightweight.lightweight.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,7 +24,7 @@ public class UserEntity {
 
     private String password;
 
-    @Column(unique = true)
-    private String username;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 }

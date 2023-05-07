@@ -15,3 +15,6 @@ spring:
         jdbc:
           batch_size: 10
         format_sql: true
+jwt:
+  token:
+    secret: 244226452948404D635166546A576E5A7234753778214125442A462D4A614E64
