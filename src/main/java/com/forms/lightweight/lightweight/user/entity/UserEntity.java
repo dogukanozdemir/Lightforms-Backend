@@ -1,6 +1,6 @@
-package com.forms.lightweight.lightweight.entity;
+package com.forms.lightweight.lightweight.user.entity;
 
-import com.forms.lightweight.lightweight.enums.Role;
+import com.forms.lightweight.lightweight.user.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 

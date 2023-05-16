@@ -1,7 +1,7 @@
 package com.forms.lightweight.lightweight.authentication.util;
 
 import com.forms.lightweight.lightweight.authentication.dto.AuthenticatedUser;
-import com.forms.lightweight.lightweight.entity.UserEntity;
+import com.forms.lightweight.lightweight.user.entity.UserEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ public class AuthUtil {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
-    public UserEntity getCurrentCustomer(){
+    public UserEntity getCurrentUser(){
         Object principal = getAuthentication().getPrincipal();
         assert principal instanceof AuthenticatedUser;
         return ((AuthenticatedUser) principal).getUser();

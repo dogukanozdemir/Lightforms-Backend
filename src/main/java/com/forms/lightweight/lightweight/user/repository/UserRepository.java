@@ -1,6 +1,6 @@
-package com.forms.lightweight.lightweight.repository;
+package com.forms.lightweight.lightweight.user.repository;
 
-import com.forms.lightweight.lightweight.entity.UserEntity;
+import com.forms.lightweight.lightweight.user.entity.UserEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

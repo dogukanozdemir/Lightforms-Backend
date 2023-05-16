@@ -1,12 +1,12 @@
-package com.forms.lightweight.lightweight.service;
+package com.forms.lightweight.lightweight.user;
 
 import com.forms.lightweight.lightweight.authentication.jwt.JwtService;
-import com.forms.lightweight.lightweight.dto.AuthenticationResponseDto;
-import com.forms.lightweight.lightweight.dto.SignInRequestDto;
-import com.forms.lightweight.lightweight.dto.SignupUserRequestDto;
-import com.forms.lightweight.lightweight.entity.UserEntity;
-import com.forms.lightweight.lightweight.enums.Role;
-import com.forms.lightweight.lightweight.repository.UserRepository;
+import com.forms.lightweight.lightweight.user.dto.AuthenticationResponseDto;
+import com.forms.lightweight.lightweight.user.dto.SignInRequestDto;
+import com.forms.lightweight.lightweight.user.dto.SignupUserRequestDto;
+import com.forms.lightweight.lightweight.user.entity.UserEntity;
+import com.forms.lightweight.lightweight.user.enums.Role;
+import com.forms.lightweight.lightweight.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
