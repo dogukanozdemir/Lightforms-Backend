@@ -1,9 +1,9 @@
-package com.forms.lightweight.lightweight.controller;
+package com.forms.lightweight.lightweight.user.controller;
 
-import com.forms.lightweight.lightweight.dto.AuthenticationResponseDto;
-import com.forms.lightweight.lightweight.dto.SignInRequestDto;
-import com.forms.lightweight.lightweight.dto.SignupUserRequestDto;
-import com.forms.lightweight.lightweight.service.UserService;
+import com.forms.lightweight.lightweight.user.UserService;
+import com.forms.lightweight.lightweight.user.dto.AuthenticationResponseDto;
+import com.forms.lightweight.lightweight.user.dto.SignInRequestDto;
+import com.forms.lightweight.lightweight.user.dto.SignupUserRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

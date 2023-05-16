@@ -1,6 +1,6 @@
 package com.forms.lightweight.lightweight.authentication.dto;
 
-import com.forms.lightweight.lightweight.entity.UserEntity;
+import com.forms.lightweight.lightweight.user.entity.UserEntity;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;

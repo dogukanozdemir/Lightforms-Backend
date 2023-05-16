@@ -1,4 +1,4 @@
-package com.forms.lightweight.lightweight.dto;
+package com.forms.lightweight.lightweight.user.dto;
 
 import lombok.Builder;
 import lombok.Data;

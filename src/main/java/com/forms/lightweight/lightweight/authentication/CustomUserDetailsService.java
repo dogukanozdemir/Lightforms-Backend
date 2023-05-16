@@ -1,8 +1,8 @@
 package com.forms.lightweight.lightweight.authentication;
 
 import com.forms.lightweight.lightweight.authentication.dto.AuthenticatedUser;
-import com.forms.lightweight.lightweight.entity.UserEntity;
-import com.forms.lightweight.lightweight.repository.UserRepository;
+import com.forms.lightweight.lightweight.user.entity.UserEntity;
+import com.forms.lightweight.lightweight.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

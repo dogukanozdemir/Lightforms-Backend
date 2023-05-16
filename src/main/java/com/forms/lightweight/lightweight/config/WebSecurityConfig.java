@@ -34,7 +34,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/api/auth/**")
                 .permitAll()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/api/service/**")
+                .authorizeHttpRequests().requestMatchers("/api/services/**")
                 .authenticated().anyRequest().permitAll()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
