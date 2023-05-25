@@ -1,11 +1,16 @@
 package com.forms.lightweight.lightweight.form;
 
 import com.forms.lightweight.lightweight.form.dto.CreateFormRequestDto;
+import com.forms.lightweight.lightweight.form.dto.FormDto;
 import com.forms.lightweight.lightweight.form.dto.UpdateFormRequestDto;
+import com.forms.lightweight.lightweight.form.enums.FormState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/services/forms")
@@ -31,5 +36,11 @@ public class FormController {
     public void deleteForm(@PathVariable Long id){
         formService.deleteForm(id);
     }
+
+    @GetMapping
+    public ResponseEntity<List<FormDto>> getFormByState(@RequestParam FormState state){
+        return ResponseEntity.ok(formService.getUserFormsByFormState(state));
+    }
+
 
 }
