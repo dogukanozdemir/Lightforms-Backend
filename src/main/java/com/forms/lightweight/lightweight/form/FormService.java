@@ -2,6 +2,7 @@ package com.forms.lightweight.lightweight.form;
 
 import com.forms.lightweight.lightweight.authentication.util.AuthUtil;
 import com.forms.lightweight.lightweight.form.dto.CreateFormRequestDto;
+import com.forms.lightweight.lightweight.form.dto.FormDto;
 import com.forms.lightweight.lightweight.form.dto.UpdateFormRequestDto;
 import com.forms.lightweight.lightweight.form.entity.Form;
 import com.forms.lightweight.lightweight.form.enums.FormState;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.lang.module.ResolutionException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +30,7 @@ public class FormService {
                 .title(createFormRequestDto.getTitle())
                 .description(createFormRequestDto.getDescription())
                 .formState(FormState.DRAFT)
-                .user_id(currentUser.getId())
+                .userId(currentUser.getId())
                 .build();
 
         formRepository.save(form);
@@ -37,9 +40,7 @@ public class FormService {
         Form form = formRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         String.format("form with id %s was not found", id)));
-        if(updateFormRequestDto.getFormState() != null){
-            form.setFormState(updateFormRequestDto.getFormState());
-        }
+        form.setFormState(updateFormRequestDto.getFormState());
         form.setTitle(updateFormRequestDto.getTitle());
         form.setDescription(updateFormRequestDto.getDescription());
         formRepository.save(form);
@@ -51,5 +52,17 @@ public class FormService {
                         String.format("form with id %s was not found", id)));
         form.setFormState(FormState.DELETED);
         formRepository.save(form);
+    }
+
+    public List<FormDto> getUserFormsByFormState(FormState state){
+        UserEntity currentUser = authUtil.getCurrentUser();
+        return formRepository.findByFormStateAndAndUserId(state, currentUser.getId())
+                .stream().map(
+                        form -> FormDto.builder()
+                                .title(form.getTitle())
+                                .description(form.getDescription())
+                                .formState(form.getFormState())
+                                .build()
+                ).collect(Collectors.toList());
     }
 }
