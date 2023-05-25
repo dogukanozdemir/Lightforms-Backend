@@ -26,4 +26,10 @@ public class FormController {
         formService.updateForm(id,updateFormRequestDto);
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteForm(@PathVariable Long id){
+        formService.deleteForm(id);
+    }
+
 }
