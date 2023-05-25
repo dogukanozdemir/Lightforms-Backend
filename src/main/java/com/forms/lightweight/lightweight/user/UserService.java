@@ -1,9 +1,11 @@
 package com.forms.lightweight.lightweight.user;
 
 import com.forms.lightweight.lightweight.authentication.jwt.JwtService;
+import com.forms.lightweight.lightweight.authentication.util.AuthUtil;
 import com.forms.lightweight.lightweight.user.dto.AuthenticationResponseDto;
 import com.forms.lightweight.lightweight.user.dto.SignInRequestDto;
 import com.forms.lightweight.lightweight.user.dto.SignupUserRequestDto;
+import com.forms.lightweight.lightweight.user.dto.UserProfileResponseDto;
 import com.forms.lightweight.lightweight.user.entity.UserEntity;
 import com.forms.lightweight.lightweight.user.enums.Role;
 import com.forms.lightweight.lightweight.user.repository.UserRepository;
@@ -25,6 +27,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+
+    private final AuthUtil authUtil;
 
     public AuthenticationResponseDto registerUser(SignupUserRequestDto signupUserRequestDTO) {
         if(userRepository.findByEmail(signupUserRequestDTO.getEmail()).isPresent()){
@@ -58,5 +62,13 @@ public class UserService {
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid email or password entered");
         }
+    }
+
+    public UserProfileResponseDto getUserProfile(){
+        UserEntity currentUser = authUtil.getCurrentUser();
+        return UserProfileResponseDto.builder()
+                .name(currentUser.getName())
+                .email(currentUser.getEmail())
+                .build();
     }
 }
