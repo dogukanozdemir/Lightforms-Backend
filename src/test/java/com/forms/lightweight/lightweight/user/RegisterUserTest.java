@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -58,7 +59,7 @@ class RegisterUserTest {
     }
 
     @Test
-    void when_user_not_exist_then_throw_exception(){
+    void when_user_not_exist(){
         UserEntity user = UserEntity.builder().id(1L).build();
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(user));
 
@@ -67,5 +68,6 @@ class RegisterUserTest {
 
         assertEquals(String.format("User with '%s' email already exists", signupUserRequestDto.getEmail()),
                 exception.getReason());
+        assertEquals(exception.getStatusCode(), HttpStatus.BAD_REQUEST);
     }
 }
