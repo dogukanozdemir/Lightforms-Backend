@@ -17,10 +17,4 @@ public class CreateFormRequestDto {
 
     @NotNull
     private String description;
-
-    @NotNull
-    private Boolean isFavorite;
-
-    @NotNull
-    private Boolean isDeleted;
 }

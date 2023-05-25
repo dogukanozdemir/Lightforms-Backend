@@ -4,6 +4,7 @@ import com.forms.lightweight.lightweight.authentication.util.AuthUtil;
 import com.forms.lightweight.lightweight.form.dto.CreateFormRequestDto;
 import com.forms.lightweight.lightweight.form.dto.UpdateFormRequestDto;
 import com.forms.lightweight.lightweight.form.entity.Form;
+import com.forms.lightweight.lightweight.form.enums.FormState;
 import com.forms.lightweight.lightweight.form.repository.FormRepository;
 import com.forms.lightweight.lightweight.user.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,7 @@ public class FormService {
         Form form =  Form.builder()
                 .title(createFormRequestDto.getTitle())
                 .description(createFormRequestDto.getDescription())
-                .isDeleted(createFormRequestDto.getIsDeleted())
-                .isFavorite(createFormRequestDto.getIsFavorite())
+                .formState(FormState.DRAFT)
                 .user_id(currentUser.getId())
                 .build();
 
@@ -37,6 +37,9 @@ public class FormService {
         Form form = formRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         String.format("form with id %s was not found", id)));
+        if(updateFormRequestDto.getFormState() != null){
+            form.setFormState(updateFormRequestDto.getFormState());
+        }
         form.setTitle(updateFormRequestDto.getTitle());
         form.setDescription(updateFormRequestDto.getDescription());
         formRepository.save(form);
@@ -46,7 +49,7 @@ public class FormService {
         Form form = formRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         String.format("form with id %s was not found", id)));
-        form.setIsDeleted(true);
+        form.setFormState(FormState.DELETED);
         formRepository.save(form);
     }
 }
