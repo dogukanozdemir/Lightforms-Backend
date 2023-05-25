@@ -41,4 +41,12 @@ public class FormService {
         form.setDescription(updateFormRequestDto.getDescription());
         formRepository.save(form);
     }
+
+    public void deleteForm(Long id){
+        Form form = formRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        String.format("form with id %s was not found", id)));
+        form.setIsDeleted(true);
+        formRepository.save(form);
+    }
 }
