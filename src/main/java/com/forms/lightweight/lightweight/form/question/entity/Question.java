@@ -4,8 +4,9 @@ import com.forms.lightweight.lightweight.form.question.enums.QuestionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -24,5 +25,5 @@ public class Question {
     @Column(columnDefinition = "SMALLINT UNSIGNED")
     private Integer questionOrder;
 
-    private Long form_id;
+    private Long formId;
 }
