@@ -3,6 +3,10 @@ package com.forms.lightweight.lightweight.user.entity;
 import com.forms.lightweight.lightweight.user.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.Instant;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,5 +30,11 @@ public class UserEntity {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @CreationTimestamp
+    private Instant createDate;
+
+    @UpdateTimestamp
+    private Instant updateDate;
 
 }
