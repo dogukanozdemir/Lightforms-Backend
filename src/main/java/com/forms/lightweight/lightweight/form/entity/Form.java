@@ -42,5 +42,7 @@ public class Form {
     @UpdateTimestamp
     private Instant updateDate;
 
+    private String formIdentifier;
+
 
 }

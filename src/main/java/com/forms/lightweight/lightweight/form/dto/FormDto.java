@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class FormDto {
 
+    private Long id;
     private String title;
     private String description;
     private FormState formState;
+    private String formIdentifier;
 }
