@@ -16,6 +16,16 @@ spring:
           batch_size: 10
         format_sql: true
         show_sql: false
+  mail:
+    host: smtpout.secureserver.net
+    port: 465
+    username: info@lightforms.co
+    password: Capstone&123
+    protocol: smtp
+    properties.mail.smtp:
+      auth: true
+      ssl.enable: true
+      ssl.trust: "*"
 jwt:
   token:
     secret: 244226452948404D635166546A576E5A7234753778214125442A462D4A614E64

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Confirm Your Email Address</title>
+    <style>
+        body {
+            background-color: #fefdfd;
+            color: #776a56;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #c7b196;
+            border-radius: 10px;
+            background-color: #f7f1e7;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #bda85f;
+            margin: 0;
+            padding: 0;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        p {
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+
+        a {
+            color: #bda85f;
+            text-decoration: none;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #bda85f;
+            color: #fefdfd;
+            border-radius: 3px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <h1>Confirm Your Email Address</h1>
+    <center><h2>Hello {{userName}}!</h2></center>
+    <p>Thank you for signing up to <b>Lightforms!</b> Please click the button down below to confirm your email address:</p>
+    <center><p><a href="{{confirmLink}}" class="btn">Confirm Email</a></p></center>
+    <p>If you did not sign up for this service, you can safely ignore this email.</p>
+    <p>Best regards,<br> The Lightforms Team</p>
+</div>
+</body>
+
+</html>
