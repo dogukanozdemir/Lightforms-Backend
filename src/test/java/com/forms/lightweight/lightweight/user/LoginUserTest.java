@@ -1,10 +1,8 @@
 package com.forms.lightweight.lightweight.user;
 
 import com.forms.lightweight.lightweight.authentication.jwt.JwtService;
-import com.forms.lightweight.lightweight.user.dto.AuthenticationResponseDto;
-import com.forms.lightweight.lightweight.user.dto.SignInRequestDto;
-import com.forms.lightweight.lightweight.user.dto.SignupUserRequestDto;
-import org.aspectj.lang.annotation.Before;
+import com.forms.lightweight.lightweight.user.authentication.AuthenticationResponseDto;
+import com.forms.lightweight.lightweight.user.authentication.SignInRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

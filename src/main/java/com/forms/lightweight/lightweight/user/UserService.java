@@ -2,9 +2,9 @@ package com.forms.lightweight.lightweight.user;
 
 import com.forms.lightweight.lightweight.authentication.jwt.JwtService;
 import com.forms.lightweight.lightweight.authentication.util.AuthUtil;
-import com.forms.lightweight.lightweight.user.dto.AuthenticationResponseDto;
-import com.forms.lightweight.lightweight.user.dto.SignInRequestDto;
-import com.forms.lightweight.lightweight.user.dto.SignupUserRequestDto;
+import com.forms.lightweight.lightweight.user.authentication.AuthenticationResponseDto;
+import com.forms.lightweight.lightweight.user.authentication.SignInRequestDto;
+import com.forms.lightweight.lightweight.user.authentication.SignupUserRequestDto;
 import com.forms.lightweight.lightweight.user.dto.UserProfileResponseDto;
 import com.forms.lightweight.lightweight.user.entity.UserEntity;
 import com.forms.lightweight.lightweight.user.enums.Role;
@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -41,6 +40,7 @@ public class UserService {
                 .email(signupUserRequestDTO.getEmail())
                 .password(passwordEncoder.encode(signupUserRequestDTO.getPassword()))
                 .role(Role.USER)
+                .isValidated(false)
                 .build();
         userRepository.save(user);
         String token = jwtService.generateToken(signupUserRequestDTO.getEmail());

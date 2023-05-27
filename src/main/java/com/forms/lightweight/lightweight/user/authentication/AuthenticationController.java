@@ -1,14 +1,12 @@
-package com.forms.lightweight.lightweight.user.controller;
+package com.forms.lightweight.lightweight.user.authentication;
 
 import com.forms.lightweight.lightweight.user.UserService;
-import com.forms.lightweight.lightweight.user.dto.AuthenticationResponseDto;
-import com.forms.lightweight.lightweight.user.dto.SignInRequestDto;
-import com.forms.lightweight.lightweight.user.dto.SignupUserRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 
 @RestController
@@ -28,6 +26,17 @@ public class AuthenticationController {
     @PostMapping(value = "/login")
     public ResponseEntity<AuthenticationResponseDto> login(@Validated @RequestBody SignInRequestDto signInRequestDTO) {
         return ResponseEntity.ok(userService.loginUser(signInRequestDTO));
+
+    }
+
+    @GetMapping(value = "/confirm")
+    public ResponseEntity<Boolean> confirmEmail(@RequestParam String token) {
+        if(token == null)
+        {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Provided token is invalid");
+        }
+
 
     }
 }

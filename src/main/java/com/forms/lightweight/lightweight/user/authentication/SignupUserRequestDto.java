@@ -1,4 +1,4 @@
-package com.forms.lightweight.lightweight.user.dto;
+package com.forms.lightweight.lightweight.user.authentication;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

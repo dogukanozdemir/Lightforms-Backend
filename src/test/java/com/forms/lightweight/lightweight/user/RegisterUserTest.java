@@ -1,8 +1,8 @@
 package com.forms.lightweight.lightweight.user;
 
 import com.forms.lightweight.lightweight.authentication.jwt.JwtService;
-import com.forms.lightweight.lightweight.user.dto.AuthenticationResponseDto;
-import com.forms.lightweight.lightweight.user.dto.SignupUserRequestDto;
+import com.forms.lightweight.lightweight.user.authentication.AuthenticationResponseDto;
+import com.forms.lightweight.lightweight.user.authentication.SignupUserRequestDto;
 import com.forms.lightweight.lightweight.user.entity.UserEntity;
 import com.forms.lightweight.lightweight.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
