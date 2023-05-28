@@ -1,4 +1,4 @@
-package com.forms.lightweight.lightweight.user.authentication;
+package com.forms.lightweight.lightweight.user.authentication.dto;
 
 import lombok.*;
 import jakarta.validation.constraints.NotNull;
@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SignInRequestDto {
+public class LoginRequestDto {
 
     @NotNull
     private String email;

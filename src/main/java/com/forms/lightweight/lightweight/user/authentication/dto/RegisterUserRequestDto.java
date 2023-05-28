@@ -1,4 +1,4 @@
-package com.forms.lightweight.lightweight.user.authentication;
+package com.forms.lightweight.lightweight.user.authentication.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SignupUserRequestDto {
+public class RegisterUserRequestDto {
 
     @NotNull
     @Size(max = 50)

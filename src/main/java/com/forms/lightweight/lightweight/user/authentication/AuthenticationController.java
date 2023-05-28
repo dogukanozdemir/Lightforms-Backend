@@ -1,42 +1,44 @@
 package com.forms.lightweight.lightweight.user.authentication;
 
-import com.forms.lightweight.lightweight.user.UserService;
+import com.forms.lightweight.lightweight.user.authentication.dto.LoginResponseDto;
+import com.forms.lightweight.lightweight.user.authentication.dto.LoginRequestDto;
+import com.forms.lightweight.lightweight.user.authentication.dto.RegisterUserRequestDto;
+import com.forms.lightweight.lightweight.user.entity.UserEntity;
+import com.forms.lightweight.lightweight.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticationController {
 
-    private final UserService userService;
+    private final AuthenticationService authenticationService;
 
     @PostMapping(value = "/signup")
-    public ResponseEntity<AuthenticationResponseDto> signup(@Validated @RequestBody SignupUserRequestDto signupUserRequestDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(userService.registerUser(signupUserRequestDTO));
+    @ResponseStatus(HttpStatus.CREATED)
+    public void signup(@Validated @RequestBody RegisterUserRequestDto registerUserRequestDTO) {
+        authenticationService.registerUser(registerUserRequestDTO);
 
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<AuthenticationResponseDto> login(@Validated @RequestBody SignInRequestDto signInRequestDTO) {
-        return ResponseEntity.ok(userService.loginUser(signInRequestDTO));
+    public ResponseEntity<LoginResponseDto> login(@Validated @RequestBody LoginRequestDto loginRequestDTO) {
+        return ResponseEntity.ok(authenticationService.loginUser(loginRequestDTO));
 
     }
 
     @GetMapping(value = "/confirm")
-    public ResponseEntity<Boolean> confirmEmail(@RequestParam String token) {
-        if(token == null)
-        {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Provided token is invalid");
-        }
-
-
+    @ResponseStatus(HttpStatus.OK)
+    public void confirmEmail(@RequestParam String token) {
+        authenticationService.confirmEmail(token);
     }
 }

@@ -1,8 +1,9 @@
 package com.forms.lightweight.lightweight.user;
 
 import com.forms.lightweight.lightweight.authentication.jwt.JwtService;
-import com.forms.lightweight.lightweight.user.authentication.AuthenticationResponseDto;
-import com.forms.lightweight.lightweight.user.authentication.SignInRequestDto;
+import com.forms.lightweight.lightweight.user.authentication.AuthenticationService;
+import com.forms.lightweight.lightweight.user.authentication.dto.LoginResponseDto;
+import com.forms.lightweight.lightweight.user.authentication.dto.LoginRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,7 +24,7 @@ import static org.mockito.Mockito.when;
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class LoginUserTest {
     @InjectMocks
-    private UserService userService;
+    private AuthenticationService authenticationService;
     @Mock
     private JwtService jwtService;
     @Mock
@@ -31,11 +32,11 @@ public class LoginUserTest {
     @Mock
     private Authentication authentication;
 
-    private SignInRequestDto signInRequestDto;
+    private LoginRequestDto loginRequestDto;
 
     @BeforeEach
     void setup(){
-        signInRequestDto = SignInRequestDto.builder()
+        loginRequestDto = LoginRequestDto.builder()
                 .email("test@example.com")
                 .password("testPassword")
                 .build();
@@ -48,7 +49,7 @@ public class LoginUserTest {
     void when_user_login_success(){
         when(authentication.isAuthenticated()).thenReturn(true);
         when(jwtService.generateToken(any())).thenReturn("token");
-        AuthenticationResponseDto responseDto = userService.loginUser(signInRequestDto);
+        LoginResponseDto responseDto = authenticationService.loginUser(loginRequestDto);
         assertEquals(responseDto.getToken(), "token");
     }
 
@@ -57,7 +58,7 @@ public class LoginUserTest {
         when(authentication.isAuthenticated()).thenReturn(false);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> userService.loginUser(signInRequestDto));
+                () -> authenticationService.loginUser(loginRequestDto));
 
         assertEquals("Invalid email or password entered",
                 exception.getReason());
