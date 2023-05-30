@@ -31,6 +31,8 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private Boolean isValidated;
+
     @CreationTimestamp
     private Instant createDate;
 

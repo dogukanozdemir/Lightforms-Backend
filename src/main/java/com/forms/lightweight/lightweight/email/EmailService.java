@@ -6,9 +6,11 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -28,14 +30,18 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    public void sendHTMLEmail(String toEmail, String subject, String htmlContent) throws MessagingException {
-        MimeMessage message = mailSender.createMimeMessage();
+    public void sendHTMLEmail(String toEmail, String subject, String htmlContent) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            message.setFrom(new InternetAddress(fromMail));
+            message.setRecipients(MimeMessage.RecipientType.TO, toEmail);
+            message.setSubject(subject);
+            message.setContent(htmlContent, "text/html; charset=utf-8");
 
-        message.setFrom(new InternetAddress(fromMail));
-        message.setRecipients(MimeMessage.RecipientType.TO, toEmail);
-        message.setSubject(subject);
-        message.setContent(htmlContent, "text/html; charset=utf-8");
+            mailSender.send(message);
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+        }
 
-        mailSender.send(message);
     }
 }

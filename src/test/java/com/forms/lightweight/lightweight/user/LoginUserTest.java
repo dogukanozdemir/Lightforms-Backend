@@ -1,10 +1,11 @@
 package com.forms.lightweight.lightweight.user;
 
 import com.forms.lightweight.lightweight.authentication.jwt.JwtService;
-import com.forms.lightweight.lightweight.user.dto.AuthenticationResponseDto;
-import com.forms.lightweight.lightweight.user.dto.SignInRequestDto;
-import com.forms.lightweight.lightweight.user.dto.SignupUserRequestDto;
-import org.aspectj.lang.annotation.Before;
+import com.forms.lightweight.lightweight.user.authentication.AuthenticationService;
+import com.forms.lightweight.lightweight.user.authentication.dto.LoginResponseDto;
+import com.forms.lightweight.lightweight.user.authentication.dto.LoginRequestDto;
+import com.forms.lightweight.lightweight.user.entity.UserEntity;
+import com.forms.lightweight.lightweight.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,11 +13,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -26,7 +28,9 @@ import static org.mockito.Mockito.when;
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class LoginUserTest {
     @InjectMocks
-    private UserService userService;
+    private AuthenticationService authenticationService;
+    @Mock
+    private UserRepository userRepository;
     @Mock
     private JwtService jwtService;
     @Mock
@@ -34,13 +38,20 @@ public class LoginUserTest {
     @Mock
     private Authentication authentication;
 
-    private SignInRequestDto signInRequestDto;
+    private LoginRequestDto loginRequestDto;
+    private UserEntity entity;
 
     @BeforeEach
     void setup(){
-        signInRequestDto = SignInRequestDto.builder()
+        loginRequestDto = LoginRequestDto.builder()
                 .email("test@example.com")
                 .password("testPassword")
+                .build();
+        entity = UserEntity.builder()
+                .id(1L)
+                .name("NAME")
+                .isValidated(true)
+                .email("email")
                 .build();
 
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
@@ -51,7 +62,8 @@ public class LoginUserTest {
     void when_user_login_success(){
         when(authentication.isAuthenticated()).thenReturn(true);
         when(jwtService.generateToken(any())).thenReturn("token");
-        AuthenticationResponseDto responseDto = userService.loginUser(signInRequestDto);
+        when(userRepository.findByEmail(any())).thenReturn(Optional.of(entity));
+        LoginResponseDto responseDto = authenticationService.loginUser(loginRequestDto);
         assertEquals(responseDto.getToken(), "token");
     }
 
@@ -60,7 +72,7 @@ public class LoginUserTest {
         when(authentication.isAuthenticated()).thenReturn(false);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> userService.loginUser(signInRequestDto));
+                () -> authenticationService.loginUser(loginRequestDto));
 
         assertEquals("Invalid email or password entered",
                 exception.getReason());

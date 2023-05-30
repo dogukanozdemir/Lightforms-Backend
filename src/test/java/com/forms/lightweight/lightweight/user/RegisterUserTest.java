@@ -1,9 +1,15 @@
 package com.forms.lightweight.lightweight.user;
 
 import com.forms.lightweight.lightweight.authentication.jwt.JwtService;
-import com.forms.lightweight.lightweight.user.dto.AuthenticationResponseDto;
-import com.forms.lightweight.lightweight.user.dto.SignupUserRequestDto;
+import com.forms.lightweight.lightweight.email.EmailContentService;
+import com.forms.lightweight.lightweight.email.EmailService;
+import com.forms.lightweight.lightweight.user.authentication.AuthenticationService;
+import com.forms.lightweight.lightweight.user.authentication.dto.LoginResponseDto;
+import com.forms.lightweight.lightweight.user.authentication.dto.RegisterUserRequestDto;
+import com.forms.lightweight.lightweight.user.authentication.entity.UserConfirmation;
+import com.forms.lightweight.lightweight.user.authentication.repository.UserConfirmationRepository;
 import com.forms.lightweight.lightweight.user.entity.UserEntity;
+import com.forms.lightweight.lightweight.user.enums.Role;
 import com.forms.lightweight.lightweight.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,47 +21,62 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @MockitoSettings(strictness = Strictness.LENIENT)
 class RegisterUserTest {
 
     @InjectMocks
-    private UserService userService;
-
+    private AuthenticationService authenticationService;
     @Mock
     private UserRepository userRepository;
-
     @Mock
     private PasswordEncoder passwordEncoder;
-
     @Mock
-    private JwtService jwtService;
-
-    private SignupUserRequestDto signupUserRequestDto;
+    private UserConfirmationRepository userConfirmationRepository;
+    @Mock
+    private EmailService emailService;
+    private RegisterUserRequestDto registerUserRequestDto;
 
     @BeforeEach
     void setup(){
-        signupUserRequestDto = SignupUserRequestDto.builder()
+
+        registerUserRequestDto = RegisterUserRequestDto.builder()
                 .name("name")
                 .email("test@example.com")
                 .password("testPassword")
                 .build();
-
     }
-
     @Test
     void when_user_register_success(){
-        when(userRepository.findByEmail(any())).thenReturn(Optional.empty());
-        when(jwtService.generateToken(any())).thenReturn("dummytoken");
+        UserEntity userEntity = UserEntity.builder()
+                .name(registerUserRequestDto.getName())
+                .email(registerUserRequestDto.getEmail())
+                .password("encodedPassword")
+                .role(Role.USER)
+                .isValidated(false)
+                .build();
+        UserConfirmation confirmation = UserConfirmation.builder()
+                .token("confirmationToken")
+                .userId(userEntity.getId())
+                .expirationDate(Date.from(Instant.now().plus(24, ChronoUnit.HOURS)))
+                .build();
 
-        AuthenticationResponseDto responseDto = userService.registerUser(signupUserRequestDto);
-        assertEquals(responseDto.getToken(), "dummytoken");
+        when(userRepository.findByEmail(registerUserRequestDto.getEmail())).thenReturn(Optional.empty());
+        when(passwordEncoder.encode(registerUserRequestDto.getPassword())).thenReturn("encodedPassword");
+        when(userRepository.save(userEntity)).thenReturn(userEntity);
+        when(userConfirmationRepository.save(confirmation)).thenReturn(confirmation);
+
+        authenticationService.registerUser(registerUserRequestDto);
+
     }
 
     @Test
@@ -64,9 +85,9 @@ class RegisterUserTest {
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(user));
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> userService.registerUser(signupUserRequestDto));
+                () -> authenticationService.registerUser(registerUserRequestDto));
 
-        assertEquals(String.format("User with '%s' email already exists", signupUserRequestDto.getEmail()),
+        assertEquals(String.format("User with '%s' email already exists", registerUserRequestDto.getEmail()),
                 exception.getReason());
         assertEquals(exception.getStatusCode(), HttpStatus.BAD_REQUEST);
     }
