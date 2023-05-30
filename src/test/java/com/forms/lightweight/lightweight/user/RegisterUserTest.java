@@ -77,6 +77,9 @@ class RegisterUserTest {
 
         authenticationService.registerUser(registerUserRequestDto);
 
+        verify(emailService, times(1)).
+                sendHTMLEmail(eq(registerUserRequestDto.getEmail()), eq("Lightforms Email Verification"), anyString());
+
     }
 
     @Test
