@@ -31,7 +31,6 @@ import java.util.UUID;
 public class AuthenticationService {
 
     private static final int CONFIRMATION_EXPIRATION_HOURS = 24;
-
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;

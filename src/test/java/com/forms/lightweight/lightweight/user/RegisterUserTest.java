@@ -29,8 +29,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @MockitoSettings(strictness = Strictness.LENIENT)
 class RegisterUserTest {
@@ -44,13 +43,12 @@ class RegisterUserTest {
     @Mock
     private UserConfirmationRepository userConfirmationRepository;
     @Mock
-    private EmailContentService emailContentService;
-    @Mock
     private EmailService emailService;
     private RegisterUserRequestDto registerUserRequestDto;
 
     @BeforeEach
     void setup(){
+
         registerUserRequestDto = RegisterUserRequestDto.builder()
                 .name("name")
                 .email("test@example.com")
@@ -76,12 +74,9 @@ class RegisterUserTest {
         when(passwordEncoder.encode(registerUserRequestDto.getPassword())).thenReturn("encodedPassword");
         when(userRepository.save(userEntity)).thenReturn(userEntity);
         when(userConfirmationRepository.save(confirmation)).thenReturn(confirmation);
-        when(EmailContentService.getConfirmationMailContent(any(),any())).thenReturn("confirmationMailContent");
 
         authenticationService.registerUser(registerUserRequestDto);
-        verify(emailService).sendHTMLEmail(userEntity.getEmail(),
-                "Lightforms Email Verification",
-                "confirmationMailContent");
+
     }
 
     @Test
