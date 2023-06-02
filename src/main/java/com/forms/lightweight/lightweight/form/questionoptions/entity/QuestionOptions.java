@@ -1,4 +1,4 @@
-package com.forms.lightweight.lightweight.form.questionoptions;
+package com.forms.lightweight.lightweight.form.questionoptions.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -6,8 +6,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -20,5 +22,5 @@ public class QuestionOptions {
 
     private String optionValue;
 
-    private Long question_id;
+    private Long questionId;
 }

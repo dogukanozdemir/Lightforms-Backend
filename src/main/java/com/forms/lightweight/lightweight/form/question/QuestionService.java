@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class QuestionService {
@@ -31,21 +33,21 @@ public class QuestionService {
                 .build();
         questionRepository.save(question);
     }
-
-    /* Question type Multiple Choice, Dropdown veya checkbox olarak add edilirse
-    *  ve sonradan type'ı text olarak update edilirse DBde question_options table'ınde option value kalıyor
-    *  bu gereksiz fazla data oluyor, yanlış associate edilebilir ve responselarda yanlış veriye sebep olabilir.
-    *  TODO: FIX IT
-    */
     public void updateQuestion(Long id, UpdateQuestionRequestDto requestDto){
         Question question = questionRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("question with id %s was not found", id)));
         question.setTitle(requestDto.getTitle());
-        question.setQuestionType(requestDto.getQuestionType());
 
         questionRepository.save(question);
     }
+    public Question findQuestion(Long id){
+        return questionRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("question with id %s was not found", id)));
+    }
 
-    // TODO: IMPLEMENT QUESTION ORDER UPDATE
+    public List<Question> findQuestions(Long formId){
+        return questionRepository.findQuestionsByFormId(formId);
+    }
 }
