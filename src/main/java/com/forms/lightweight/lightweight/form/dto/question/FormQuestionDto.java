@@ -1,19 +1,22 @@
-package com.forms.lightweight.lightweight.form.question.dto;
+package com.forms.lightweight.lightweight.form.dto.question;
 
 import com.forms.lightweight.lightweight.form.question.enums.QuestionType;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UpdateQuestionRequestDto {
+public class FormQuestionDto {
 
-    @NotNull
     private String title;
 
+    private QuestionType questionType;
+
+    private List<FormQuestionOptionDto> questionOptions;
 }

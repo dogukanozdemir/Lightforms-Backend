@@ -1,4 +1,4 @@
-package com.forms.lightweight.lightweight.user.controller;
+package com.forms.lightweight.lightweight.user;
 
 import com.forms.lightweight.lightweight.user.UserService;
 import com.forms.lightweight.lightweight.user.dto.UserProfileResponseDto;

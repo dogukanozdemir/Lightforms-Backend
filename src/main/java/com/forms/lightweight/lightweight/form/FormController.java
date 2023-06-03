@@ -1,7 +1,8 @@
 package com.forms.lightweight.lightweight.form;
 
 import com.forms.lightweight.lightweight.form.dto.CreateFormRequestDto;
-import com.forms.lightweight.lightweight.form.dto.FormDto;
+import com.forms.lightweight.lightweight.form.dto.FormContentResponseDto;
+import com.forms.lightweight.lightweight.form.dto.FormPreviewResponseDto;
 import com.forms.lightweight.lightweight.form.dto.UpdateFormRequestDto;
 import com.forms.lightweight.lightweight.form.enums.FormState;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +39,13 @@ public class FormController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FormDto>> getFormByState(@RequestParam FormState state){
-        return ResponseEntity.ok(formService.getUserFormsByFormState(state));
+    public ResponseEntity<List<FormPreviewResponseDto>> getFormByState(@RequestParam FormState state){
+        return ResponseEntity.ok(formService.getUserFormPreviewsByState(state));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<FormContentResponseDto> getFormContent(@PathVariable Long id){
+        return ResponseEntity.ok(formService.getFormContents(id));
     }
 
 

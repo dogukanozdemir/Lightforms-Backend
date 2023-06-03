@@ -8,23 +8,23 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/services/forms/questions")
+@RequestMapping("/api/services/forms")
 @RequiredArgsConstructor
 public class QuestionController {
 
     private final QuestionService questionService;
 
-    @PostMapping()
+    @PostMapping("/{formId}/questions")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addQuestion(@RequestParam Long formId,
+    public void addQuestion(@PathVariable Long formId,
                             @Validated @RequestBody AddQuestionRequestDto requestDto)
     {
         questionService.addQuestion(formId,requestDto);
     }
 
-    @PatchMapping()
+    @PutMapping("/questions/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateQuestion(@RequestParam Long id,
+    public void updateQuestion(@PathVariable Long id,
                             @Validated @RequestBody UpdateQuestionRequestDto requestDto)
     {
         questionService.updateQuestion(id,requestDto);

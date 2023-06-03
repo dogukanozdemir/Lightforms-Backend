@@ -10,11 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FormDto {
+public class FormPreviewResponseDto {
 
     private Long id;
     private String title;
-    private String description;
     private FormState formState;
     private String formIdentifier;
 }
