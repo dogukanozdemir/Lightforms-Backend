@@ -18,13 +18,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class QuestionService {
-
-    private final FormService formService;
     private final QuestionRepository questionRepository;
 
     public void addQuestion(Long formId, AddQuestionRequestDto requestDto){
-        formService.findFormById(formId);
-        Integer currentQuestionOrder = questionRepository.findMaxOrder(formId) + 1;
+        Integer maxOrder = questionRepository.findMaxOrder(formId);
+        Integer currentQuestionOrder = maxOrder != null ? maxOrder + 1 : 1;
         Question question = Question.builder()
                 .title(requestDto.getTitle())
                 .questionType(requestDto.getQuestionType())
