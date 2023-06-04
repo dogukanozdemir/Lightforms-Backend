@@ -1,9 +1,6 @@
 package com.forms.lightweight.lightweight.form;
 
-import com.forms.lightweight.lightweight.form.dto.CreateFormRequestDto;
-import com.forms.lightweight.lightweight.form.dto.FormContentResponseDto;
-import com.forms.lightweight.lightweight.form.dto.FormPreviewResponseDto;
-import com.forms.lightweight.lightweight.form.dto.UpdateFormRequestDto;
+import com.forms.lightweight.lightweight.form.dto.*;
 import com.forms.lightweight.lightweight.form.enums.FormState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -46,6 +43,11 @@ public class FormController {
     @GetMapping("/{id}")
     public ResponseEntity<FormContentResponseDto> getFormContent(@PathVariable Long id){
         return ResponseEntity.ok(formService.getFormContents(id));
+    }
+
+    @PostMapping("/{id}/publish")
+    public ResponseEntity<PublishFormResponseDto> publishForm(@PathVariable Long id){
+        return ResponseEntity.ok(formService.publishForm(id));
     }
 
 
