@@ -1,10 +1,7 @@
 package com.forms.lightweight.lightweight.form;
 
 import com.forms.lightweight.lightweight.authentication.util.AuthUtil;
-import com.forms.lightweight.lightweight.form.dto.CreateFormRequestDto;
-import com.forms.lightweight.lightweight.form.dto.FormContentResponseDto;
-import com.forms.lightweight.lightweight.form.dto.FormPreviewResponseDto;
-import com.forms.lightweight.lightweight.form.dto.UpdateFormRequestDto;
+import com.forms.lightweight.lightweight.form.dto.*;
 import com.forms.lightweight.lightweight.form.dto.question.FormQuestionDto;
 import com.forms.lightweight.lightweight.form.dto.question.FormQuestionOptionDto;
 import com.forms.lightweight.lightweight.form.entity.Form;
@@ -61,6 +58,17 @@ public class FormService {
                         String.format("form with id %s was not found", id)));
         form.setFormState(FormState.DELETED);
         formRepository.save(form);
+    }
+
+    public PublishFormResponseDto publishForm(Long id){
+        Form form = formRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("form with id %s was not found", id)));
+        form.setFormState(FormState.PUBLISHED);
+        formRepository.save(form);
+        return PublishFormResponseDto.builder()
+                .formIdentifier(form.getFormIdentifier())
+                .build();
     }
 
     public List<FormPreviewResponseDto> getUserFormPreviewsByState(FormState state) {
