@@ -36,12 +36,14 @@ public class FormService {
                 .description(createFormRequestDto.getDescription())
                 .formState(FormState.DRAFT)
                 .userId(currentUser.getId())
+                .formIdentifier(UUID.randomUUID().toString())
                 .build();
 
         formRepository.save(form);
         return CreateFormResponseDto.builder()
                 .id(form.getId())
                 .title(form.getTitle())
+                .formIdentifier(form.getFormIdentifier())
                 .build();
     }
 
@@ -68,7 +70,6 @@ public class FormService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("form with id %s was not found", id)));
         form.setFormState(FormState.PUBLISHED);
-        form.setFormIdentifier(UUID.randomUUID().toString());
         formRepository.save(form);
         return PublishFormResponseDto.builder()
                 .formIdentifier(form.getFormIdentifier())
@@ -112,7 +113,7 @@ public class FormService {
                             .collect(Collectors.toList());
                     return FormQuestionDto.builder()
                             .title(question.getTitle())
-                            .questionType(question.getQuestionType())
+                            .questionType(question.getQuestionType().name().toLowerCase())
                             .questionOptions(options)
                             .build();
                 })

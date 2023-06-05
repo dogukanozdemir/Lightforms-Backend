@@ -22,7 +22,8 @@ public class QuestionOptionsService {
 
     public void addOptionToQuestion(Long questionId, AddQuestionOptionRequestDto optionRequestDto){
         Question question = questionService.findQuestion(questionId);
-        if(QuestionType.TEXT.equals(question.getQuestionType())){
+        if(!QuestionType.RADIO.equals(question.getQuestionType()) &&
+                !QuestionType.DROPDOWN.equals(question.getQuestionType()) && !QuestionType.CHECKBOX.equals(question.getQuestionType())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "you can't add options to a question with type TEXT");
         }

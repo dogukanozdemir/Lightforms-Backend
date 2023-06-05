@@ -14,4 +14,6 @@ public class CreateFormResponseDto {
     private Long id;
 
     private String title;
+
+    private String formIdentifier;
 }

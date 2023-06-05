@@ -16,7 +16,7 @@ public class FormQuestionDto {
 
     private String title;
 
-    private QuestionType questionType;
+    private String questionType;
 
     private List<FormQuestionOptionDto> questionOptions;
 }
