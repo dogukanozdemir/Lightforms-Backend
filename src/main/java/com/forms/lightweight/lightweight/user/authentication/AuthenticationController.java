@@ -3,6 +3,7 @@ package com.forms.lightweight.lightweight.user.authentication;
 import com.forms.lightweight.lightweight.user.authentication.dto.LoginResponseDto;
 import com.forms.lightweight.lightweight.user.authentication.dto.LoginRequestDto;
 import com.forms.lightweight.lightweight.user.authentication.dto.RegisterUserRequestDto;
+import com.forms.lightweight.lightweight.user.authentication.dto.RegisterUserResponseDto;
 import com.forms.lightweight.lightweight.user.entity.UserEntity;
 import com.forms.lightweight.lightweight.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +25,8 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping(value = "/signup")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void signup(@Validated @RequestBody RegisterUserRequestDto registerUserRequestDTO) {
-        authenticationService.registerUser(registerUserRequestDTO);
+    public ResponseEntity<RegisterUserResponseDto> signup(@Validated @RequestBody RegisterUserRequestDto registerUserRequestDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(authenticationService.registerUser(registerUserRequestDTO));
 
     }
 

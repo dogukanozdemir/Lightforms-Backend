@@ -6,6 +6,7 @@ import com.forms.lightweight.lightweight.email.EmailService;
 import com.forms.lightweight.lightweight.user.authentication.dto.LoginResponseDto;
 import com.forms.lightweight.lightweight.user.authentication.dto.LoginRequestDto;
 import com.forms.lightweight.lightweight.user.authentication.dto.RegisterUserRequestDto;
+import com.forms.lightweight.lightweight.user.authentication.dto.RegisterUserResponseDto;
 import com.forms.lightweight.lightweight.user.authentication.entity.UserConfirmation;
 import com.forms.lightweight.lightweight.user.authentication.repository.UserConfirmationRepository;
 import com.forms.lightweight.lightweight.user.entity.UserEntity;
@@ -38,7 +39,7 @@ public class AuthenticationService {
     private final EmailService emailService;
     private final JwtService jwtService;
 
-    public void registerUser(RegisterUserRequestDto registerUserRequestDTO) {
+    public RegisterUserResponseDto registerUser(RegisterUserRequestDto registerUserRequestDTO) {
         if (userRepository.findByEmail(registerUserRequestDTO.getEmail()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     String.format("User with '%s' email already exists", registerUserRequestDTO.getEmail()));
@@ -49,7 +50,7 @@ public class AuthenticationService {
                 .email(registerUserRequestDTO.getEmail())
                 .password(passwordEncoder.encode(registerUserRequestDTO.getPassword()))
                 .role(Role.USER)
-                .isValidated(false)
+                .isValidated(true)
                 .build();
 
         userRepository.save(user);
@@ -64,6 +65,10 @@ public class AuthenticationService {
 
         String mailContent = EmailContentService.getConfirmationMailContent(user.getName(), confirmation.getToken());
         emailService.sendHTMLEmail(user.getEmail(), "Lightforms Email Verification", mailContent);
+
+        return RegisterUserResponseDto.builder()
+                .token(jwtService.generateToken(registerUserRequestDTO.getEmail()))
+                .build();
     }
 
     public LoginResponseDto loginUser(LoginRequestDto loginRequestDTO) {
