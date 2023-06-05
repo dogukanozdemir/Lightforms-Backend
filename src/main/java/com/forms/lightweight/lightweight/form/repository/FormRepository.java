@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface FormRepository extends CrudRepository<Form, Long> {
 
     List<Form> findByFormStateAndAndUserId(FormState state, Long userId);
+
+    Optional<Form> findByFormIdentifier(String uuid);
 }

@@ -28,7 +28,7 @@ public class FormService {
     private final QuestionService questionService;
     private final QuestionOptionsService questionOptionsService;
 
-    public void createForm(CreateFormRequestDto createFormRequestDto) {
+    public CreateFormResponseDto createForm(CreateFormRequestDto createFormRequestDto) {
         UserEntity currentUser = authUtil.getCurrentUser();
 
         Form form = Form.builder()
@@ -36,10 +36,13 @@ public class FormService {
                 .description(createFormRequestDto.getDescription())
                 .formState(FormState.DRAFT)
                 .userId(currentUser.getId())
-                .formIdentifier(UUID.randomUUID().toString())
                 .build();
 
         formRepository.save(form);
+        return CreateFormResponseDto.builder()
+                .id(form.getId())
+                .title(form.getTitle())
+                .build();
     }
 
     public void updateForm(Long id, UpdateFormRequestDto updateFormRequestDto) {
@@ -65,6 +68,7 @@ public class FormService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("form with id %s was not found", id)));
         form.setFormState(FormState.PUBLISHED);
+        form.setFormIdentifier(UUID.randomUUID().toString());
         formRepository.save(form);
         return PublishFormResponseDto.builder()
                 .formIdentifier(form.getFormIdentifier())
@@ -84,11 +88,22 @@ public class FormService {
                 ).collect(Collectors.toList());
     }
 
-    public FormContentResponseDto getFormContents(Long id){
+    public FormContentResponseDto getFormContentByFormId(Long id){
         Form form = formRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Form with id %s was not found", id)));
+        return getFormContents(form);
+    }
 
-        List<FormQuestionDto> questions = questionService.findQuestions(id).stream()
+    public FormContentResponseDto getFormContentByFormIdentifier(String formIdentifier){
+        Form form = formRepository.findByFormIdentifier(formIdentifier)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("Form with uuid %s was not found", formIdentifier)));
+        return getFormContents(form);
+    }
+
+    private FormContentResponseDto getFormContents(Form form){
+
+        List<FormQuestionDto> questions = questionService.findQuestions(form.getId()).stream()
                 .map(question -> {
                     List<FormQuestionOptionDto> options = questionOptionsService.findQuestionOptions(question.getId()).stream()
                             .map(option -> FormQuestionOptionDto.builder()
@@ -104,6 +119,7 @@ public class FormService {
                 .collect(Collectors.toList());
 
         return FormContentResponseDto.builder()
+                .id(form.getId())
                 .title(form.getTitle())
                 .description(form.getDescription())
                 .questions(questions)

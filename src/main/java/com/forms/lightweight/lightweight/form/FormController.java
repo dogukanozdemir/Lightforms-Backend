@@ -18,9 +18,8 @@ public class FormController {
     private final FormService formService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createForm(@Validated @RequestBody CreateFormRequestDto createFormRequestDto){
-        formService.createForm(createFormRequestDto);
+    public ResponseEntity<CreateFormResponseDto> createForm(@Validated @RequestBody CreateFormRequestDto createFormRequestDto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(formService.createForm(createFormRequestDto));
     }
 
     @PatchMapping("/{id}")
@@ -40,9 +39,14 @@ public class FormController {
         return ResponseEntity.ok(formService.getUserFormPreviewsByState(state));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<FormContentResponseDto> getFormContent(@PathVariable Long id){
-        return ResponseEntity.ok(formService.getFormContents(id));
+    @GetMapping("/byId/{id}")
+    public ResponseEntity<FormContentResponseDto> getFormContentById(@PathVariable Long id){
+        return ResponseEntity.ok(formService.getFormContentByFormId(id));
+    }
+
+    @GetMapping("/byUuid/{token}")
+    public ResponseEntity<FormContentResponseDto> getFormContentByIdentifier(@PathVariable String token){
+        return ResponseEntity.ok(formService.getFormContentByFormIdentifier(token));
     }
 
     @PostMapping("/{id}/publish")
