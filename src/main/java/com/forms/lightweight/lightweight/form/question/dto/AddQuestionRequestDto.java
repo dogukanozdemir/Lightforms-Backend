@@ -14,6 +14,9 @@ import lombok.NoArgsConstructor;
 public class AddQuestionRequestDto {
 
     @NotNull
+    private Long formId;
+
+    @NotNull
     private String title;
 
     @NotNull

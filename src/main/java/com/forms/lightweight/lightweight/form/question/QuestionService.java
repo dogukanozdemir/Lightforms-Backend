@@ -21,13 +21,13 @@ import java.util.List;
 public class QuestionService {
     private final QuestionRepository questionRepository;
 
-    public AddQuestionResponseDto addQuestion(Long formId, AddQuestionRequestDto requestDto){
-        Integer maxOrder = questionRepository.findMaxOrder(formId);
+    public AddQuestionResponseDto addQuestion(AddQuestionRequestDto requestDto){
+        Integer maxOrder = questionRepository.findMaxOrder(requestDto.getFormId());
         Integer currentQuestionOrder = maxOrder != null ? maxOrder + 1 : 1;
         Question question = Question.builder()
                 .title(requestDto.getTitle())
                 .questionType(requestDto.getQuestionType())
-                .formId(formId)
+                .formId(requestDto.getFormId())
                 .questionOrder(currentQuestionOrder)
                 .build();
         questionRepository.save(question);

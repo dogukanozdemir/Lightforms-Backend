@@ -16,12 +16,10 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
-    @PostMapping("/{formId}/questions")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<AddQuestionResponseDto> addQuestion(@PathVariable Long formId,
-                                                              @Validated @RequestBody AddQuestionRequestDto requestDto)
+    @PostMapping("/questions")
+    public ResponseEntity<AddQuestionResponseDto> addQuestion(@Validated @RequestBody AddQuestionRequestDto requestDto)
     {
-        return ResponseEntity.status(HttpStatus.CREATED).body(questionService.addQuestion(formId,requestDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(questionService.addQuestion(requestDto));
     }
 
     @PutMapping("/questions/{id}")
