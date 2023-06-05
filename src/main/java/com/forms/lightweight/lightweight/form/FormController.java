@@ -49,6 +49,4 @@ public class FormController {
     public ResponseEntity<PublishFormResponseDto> publishForm(@PathVariable Long id){
         return ResponseEntity.ok(formService.publishForm(id));
     }
-
-
 }

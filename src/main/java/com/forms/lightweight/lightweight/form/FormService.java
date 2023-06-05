@@ -92,10 +92,12 @@ public class FormService {
                 .map(question -> {
                     List<FormQuestionOptionDto> options = questionOptionsService.findQuestionOptions(question.getId()).stream()
                             .map(option -> FormQuestionOptionDto.builder()
+                                    .optionId(option.getId())
                                     .optionText(option.getOptionValue())
                                     .build())
                             .collect(Collectors.toList());
                     return FormQuestionDto.builder()
+                            .questionId(question.getId())
                             .title(question.getTitle())
                             .questionType(question.getQuestionType())
                             .questionOptions(options)
