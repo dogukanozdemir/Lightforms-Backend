@@ -14,6 +14,7 @@ import java.util.List;
 @Builder
 public class FormQuestionDto {
 
+    private Long id;
     private String title;
 
     private String questionType;
