@@ -4,6 +4,7 @@ import com.forms.lightweight.lightweight.form.question.QuestionService;
 import com.forms.lightweight.lightweight.form.question.entity.Question;
 import com.forms.lightweight.lightweight.form.question.enums.QuestionType;
 import com.forms.lightweight.lightweight.form.questionoptions.dto.AddQuestionOptionRequestDto;
+import com.forms.lightweight.lightweight.form.questionoptions.dto.AddQuestionOptionResponseDto;
 import com.forms.lightweight.lightweight.form.questionoptions.entity.QuestionOptions;
 import com.forms.lightweight.lightweight.form.questionoptions.repository.QuestionOptionsRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +18,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuestionOptionsService {
     private final QuestionService questionService;
-
     private final QuestionOptionsRepository questionOptionsRepository;
 
-    public void addOptionToQuestion(Long questionId, AddQuestionOptionRequestDto optionRequestDto){
+    public AddQuestionOptionResponseDto addOptionToQuestion(Long questionId, AddQuestionOptionRequestDto optionRequestDto){
         Question question = questionService.findQuestion(questionId);
         if(!QuestionType.RADIO.equals(question.getQuestionType()) &&
                 !QuestionType.DROPDOWN.equals(question.getQuestionType()) && !QuestionType.CHECKBOX.equals(question.getQuestionType())){
@@ -32,6 +32,20 @@ public class QuestionOptionsService {
                 .questionId(questionId)
                 .build();
         questionOptionsRepository.save(questionOption);
+        return AddQuestionOptionResponseDto.builder()
+                .id(questionOption.getId())
+                .build();
+    }
+
+    public void deleteQuestionOption(Long id){
+        questionOptionsRepository.findById(id)
+                .ifPresentOrElse(
+                        option -> questionOptionsRepository.deleteById(id),
+                        () -> {
+                            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                    String.format("Option with id %s was not found", id));
+                        });
+
     }
 
     public List<QuestionOptions> findQuestionOptions(Long id){
