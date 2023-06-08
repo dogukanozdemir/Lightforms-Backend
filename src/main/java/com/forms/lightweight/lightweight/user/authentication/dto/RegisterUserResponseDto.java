@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class RegisterUserResponseDto {
 
     private String token;
